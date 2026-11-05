@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'RAHUL_STUDIO_18_1_ANDROID_AUTO_BUILD.zip'
+      - 'RAHUL_STUDIO_18_1_ANDROID_AUTO_BUILD_REVISED.zip'
       - '.github/workflows/build-apk.yml'
-
+Siapkan Java JDK melalui langkah-langkah
 permissions:
   contents: read
 
