@@ -6,7 +6,7 @@ on:
     paths:
       - 'RAHUL_STUDIO_18_1_ANDROID_AUTO_BUILD_REVISED.zip'
       - '.github/workflows/build-apk.yml'
-Siapkan Java JDK melalui langkah-langkah
+
 permissions:
   contents: read
 
@@ -15,9 +15,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-java@v4
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
@@ -29,25 +31,28 @@ jobs:
           echo "$ANDROID_HOME/cmdline-tools/latest/bin" >> "$GITHUB_PATH"
           echo "$ANDROID_HOME/platform-tools" >> "$GITHUB_PATH"
 
-      - name: Install Android packages
+      - name: Install Android SDK packages
         shell: bash
         run: |
           SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
-          
-          "$SDKMANAGER" --sdk_root="$ANDROID_HOME" --install "platforms;android-35" "build-tools;35.0.0"
+          yes | "$SDKMANAGER" --sdk_root="$ANDROID_HOME" --licenses || true
+          "$SDKMANAGER" --sdk_root="$ANDROID_HOME" --install "platform-tools" "platforms;android-35" "build-tools;35.0.0"
 
-      - uses: gradle/actions/setup-gradle@v4
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'
 
       - name: Extract project
-        run: unzip -q RAHUL_STUDIO_18_1_ANDROID_AUTO_BUILD.zip -d source
+        run: |
+          unzip -q RAHUL_STUDIO_18_1_ANDROID_AUTO_BUILD_REVISED.zip -d source
 
       - name: Build APK
         working-directory: source/RAHUL_STUDIO_18_1_ANDROID
         run: gradle --no-daemon assembleDebug
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
         with:
           name: RAHUL-STUDIO-18.1-APK
           path: source/RAHUL_STUDIO_18_1_ANDROID/app/build/outputs/apk/debug/app-debug.apk
