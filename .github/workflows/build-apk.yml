@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'RAHUL_STUDIO_20_0_ANDROID_FOUNDATION.zip'
+      - 'RAHUL_STUDIO_20_0_ANDROID_FOUNDATION_FIXED.zip'
       - '.github/workflows/build-apk.yml'
 
 permissions:
@@ -37,7 +37,7 @@ jobs:
           gradle-version: '8.9'
 
       - name: Extract Android project
-        run: unzip -q RAHUL_STUDIO_20_0_ANDROID_FOUNDATION.zip -d source
+        run: unzip -q RAHUL_STUDIO_20_0_ANDROID_FOUNDATION_FIXED.zip -d source
 
       - name: Build debug APK
         working-directory: source/RAHUL_STUDIO_18_1_ANDROID
